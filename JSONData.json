@@ -1,0 +1,186 @@
+[
+    {
+        "alias": "anything",
+        "title": "Anything"
+    },
+    {
+        "alias": "afghan",
+        "title": "Afghan"
+    },
+    {
+        "alias": "newamerican",
+        "title": "American (New)"
+    },
+    {
+        "alias": "tradamerican",
+        "title": "American (Traditional)"
+    },
+    {
+        "alias": "asianfusion",
+        "title": "Asian Fusion"
+    },
+    {
+        "alias": "bbq",
+        "title": "Barbeque"
+    },
+    {
+        "alias": "bars",
+        "title": "Bars"
+    },
+    {
+        "alias": "bistros",
+        "title": "Bistros"
+    },
+    {
+        "alias": "brazilian",
+        "title": "Brazilian"
+    },
+    {
+        "alias": "breakfast_brunch",
+        "title": "Breakfast & Brunch"
+    },
+    {
+        "alias": "buffets",
+        "title": "Buffets"
+    },
+    {
+        "alias": "burgers",
+        "title": "Burgers"
+    },
+    {
+        "alias": "cafes",
+        "title": "Cafes"
+    },
+    {
+        "alias": "caribbean",
+        "title": "Caribbean"
+    },
+    {
+        "alias": "chicken_wings",
+        "title": "Chicken Wings"
+    },
+    {
+        "alias": "chinese",
+        "title": "Chinese"
+    },
+    {
+        "alias": "cuban",
+        "title": "Cuban"
+    },
+    {
+        "alias": "delis",
+        "title": "Delis"
+    },
+    {
+        "alias": "diners",
+        "title": "Diners"
+    },
+    {
+        "alias": "hotdogs",
+        "title": "Fast Food"
+    },
+    {
+        "alias": "foodstands",
+        "title": "Food Stands"
+    },
+    {
+        "alias": "french",
+        "title": "French"
+    },
+    {
+        "alias": "german",
+        "title": "German"
+    },
+    {
+        "alias": "greek",
+        "title": "Greek"
+    },
+    {
+        "alias": "halal",
+        "title": "Halal"
+    },
+    {
+        "alias": "indpak",
+        "title": "Indian"
+    },
+    {
+        "alias": "italian",
+        "title": "Italian"
+    },
+    {
+        "alias": "japanese",
+        "title": "Japanese"
+    },
+    {
+        "alias": "kebab",
+        "title": "Kebab"
+    },
+    {
+        "alias": "korean",
+        "title": "Korean"
+    },
+    {
+        "alias": "kosher",
+        "title": "Kosher"
+    },
+    {
+        "alias": "mediterranean",
+        "title": "Mediterranean"
+    },
+    {
+        "alias": "mexican",
+        "title": "Mexican"
+    },
+    {
+        "alias": "pizza",
+        "title": "Pizza"
+    },
+    {
+        "alias": "pizza",
+        "title": "Pizza"
+    },
+    {
+        "alias": "russian",
+        "title": "Russian"
+    },
+    {
+        "alias": "salad",
+        "title": "Salad"
+    },
+    {
+        "alias": "sandwiches",
+        "title": "Sandwiches"
+    },
+    {
+        "alias": "seafood",
+        "title": "Seafood"
+    },
+    {
+        "alias": "southern",
+        "title": "Southern"
+    },
+    {
+        "alias": "steakhouses",
+        "title": "Steakhouses"
+    },
+    {
+        "alias": "sushi",
+        "title": "Sushi Bars"
+    },
+    {
+        "alias": "tapasmallplates",
+        "title": "Tapas/Small Plates"
+    },
+    {
+        "alias": "thai",
+        "title": "Thai"
+    },
+    {
+        "alias": "vegan",
+        "title": "Vegan"
+    },
+    {
+        "alias": "vegetarian",
+        "title": "Vegetarian"
+    }
+]
