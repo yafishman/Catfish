@@ -9,50 +9,50 @@ import SwiftUI
 
 
 struct PhotosView: View {
-
-    var photo: String
+    
+    var restaurant: Restaurant
     var index: Int
-    var maxIndex: Int
-
-    init(photo: String, index: Int, maxIndex: Int) {
-        self.photo = photo
+    
+    @ObservedObject var detailedFetcher: DetailedAPI
+    var photos: [String] { detailedFetcher.photos}
+    var maxIndex: Int { photos.count}
+    init(restaurant: Restaurant, index: Int) {
+        self.detailedFetcher = DetailedAPI(id: restaurant.id)
+        self.restaurant = restaurant
         self.index = index
-        self.maxIndex = maxIndex
     }
-
+    
     var body: some View {
-        ZStack(alignment: .bottom) {
+        VStack(alignment: .center) {
             GeometryReader { geometry in
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 0) {
-                        ImageView(withURL: self.photo)
+                HStack(spacing: 0) {
+                    if(self.maxIndex==0) {
+                        ImageView(withURL: self.restaurant.image_url)
                             .frame(width: geometry.size.width, height: geometry.size.height)
                             .clipped()
-        
+                    } else {
+                        ImageView(withURL: self.photos[self.clampedIndex(predictedIndex: self.index)] )
+                            .frame(width: geometry.size.width, height: geometry.size.height)
+                            .clipped()
                     }
+                    
                 }
                 .frame(width: geometry.size.width, alignment: .leading)
-                        //                    including: DragGesture(minimumDistance: 0)
-//                    .onEnded { value in
-//                        let num = value.startLocation.x
-//                        if(num >= geometry.size.width/2) {//right half
-//                            self.index = self.clampedIndex(predictedIndex: self.index+1)
-//                        } else {
-//                            self.index = self.clampedIndex(predictedIndex: self.index-1)
-//                        }
-//                    }
+                
             }
             .clipped()
-
-            PageControl(index: self.index, maxIndex: self.maxIndex)
+            
+            PageControl(index: self.clampedIndex(predictedIndex: self.index), maxIndex: self.maxIndex)
         }
     }
-
+    
     func clampedIndex(predictedIndex: Int) -> Int {
-        if(predictedIndex == -1) {
-            return maxIndex-1
-        } else if (predictedIndex == maxIndex) {
+        if(self.maxIndex == 0) {
             return 0
+        } else if(predictedIndex < 0) {
+            return predictedIndex * (-1) % maxIndex
+        } else if (predictedIndex >= maxIndex) {
+            return predictedIndex%maxIndex
         } else {
             return predictedIndex
         }
@@ -62,7 +62,7 @@ struct PhotosView: View {
 struct PageControl: View {
     var index: Int
     let maxIndex: Int
-
+    
     var body: some View {
         HStack(spacing: 8) {
             ForEach(0..<maxIndex, id: \.self) { index in

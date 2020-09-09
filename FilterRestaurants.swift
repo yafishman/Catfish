@@ -10,20 +10,21 @@
 import SwiftUI
 
 struct FilterRestaurants: View {
-    //@ObservedObject var allRestaurants = Restaurants.all
     
     @Binding var restaurantSearch: RestaurantSearch
     @Binding var isPresented: Bool
     
     @State private var draft: RestaurantSearch
     @State var percentage: Float = 50
-    @State var deliv: Bool = false
-    @State var pickup: Bool = false
+    @State var deliv: Bool
+    @State var pickup: Bool
     
     init(restaurantSearch: Binding<RestaurantSearch>, isPresented: Binding<Bool>) {
         _restaurantSearch = restaurantSearch
         _isPresented = isPresented
         _draft = State(wrappedValue: restaurantSearch.wrappedValue)
+        _deliv = State(wrappedValue: restaurantSearch.wrappedValue.transactions.contains("delivery"))
+        _pickup = State(wrappedValue: restaurantSearch.wrappedValue.transactions.contains("pickup"))
     }
     var body: some View {
         NavigationView {
@@ -87,8 +88,16 @@ struct FilterRestaurants: View {
                     }
                     
                 }
+                HStack {
+                    Toggle(isOn: $draft.isOpen) { Text("Open now") }
+                    Toggle(isOn: $draft.onlyWatchlist) { Text("Only watchlist") }
+                }
+                HStack {
+                    Toggle(isOn: $draft.hideDisliked) { Text("Hide disliked") }
+                    Toggle(isOn: $draft.hideVisited) { Text("Hide visited") }
+                    
+                }
                 
-                Toggle(isOn: $draft.isOpen) { Text("Limit search to only open restaurants") }
                 
             }
             .navigationBarTitle("Filter Restaurants")
@@ -110,7 +119,7 @@ struct FilterRestaurants: View {
 }
 struct CategoryLabelView: View {
     @Binding var categories: [Category]
-    var anything = Category(alias: "anything", title: "Anything")
+    var anything = Category(alias: "anything")
     var body: some View {
         HStack {
             Text("Categories")
@@ -126,8 +135,4 @@ struct CategoryLabelView: View {
         
     }
 }
-//struct FilterRestaurants_Previews: PreviewProvider {
-//    static var previews: some View {
-//        FilterRestaurants(, isPresented: Binding<Bool>)
-//    }
-//}
+

@@ -7,25 +7,54 @@
 //
 
 import SwiftUI
+import CoreData
+
 
 struct ListView: View {
-    var restaurants: [Restaurant]
+    @EnvironmentObject private var userData: UserData
     var title: String
     @Binding var isPresented: Bool
     var body: some View {
         NavigationView {
-                List {
-                    ForEach(self.restaurants, id: \.self) { restaurant in
-                                NavigationLink(
-                                    destination: DetailedView(restaurant, isPresented: self.$isPresented)
-                                ) {
-                                    RestaurantRow(restaurant: restaurant, isLiked: self.title=="Liked",
-                                                  isDisliked: self.title=="Disliked",
-                                                  isWatched: self.title=="Watchlisted")
-                                }
+            List {
+                ForEach(userData.possibles, id: \.self) { restaurant in
+                    NavigationLink(
+                        destination: DetailedView(restaurant, isPresented: self.$isPresented)
+                    ) {
+                        RestaurantRow(restaurant: restaurant, isLiked: self.userData.likes.contains(restaurant),
+                                      isDisliked: self.userData.dislikes.contains(restaurant),
+                                      isWatched: self.userData.watchlist.contains(restaurant))
                     }
-                    
-                }.navigationBarTitle(Text("\(title) Restaurants"))
+                }.onDelete(perform: delete)
+                
+            }.navigationBarTitle(Text("\(title) Restaurants")).navigationBarItems(trailing: deleteAll)
+        }
+    }
+    var deleteAll: some View {
+        Button("Delete All") {
+            self.userData.possibles.removeAll()
+        }
+    }
+    func delete(at offsets: IndexSet) {
+        userData.possibles.remove(atOffsets: offsets)
+    }
+    func deleteAllData()
+    {
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+        let managedContext = appDelegate.persistentContainer.viewContext
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Visited")
+        fetchRequest.returnsObjectsAsFaults = false
+        
+        do
+        {
+            let results =  try managedContext.fetch(fetchRequest)
+            for managedObject in results  as! [NSManagedObject]
+            {
+                managedContext.delete(managedObject)
+            }
+            try managedContext.save()
+        } catch let error as NSError {
+            print("error : \(error) \(error.userInfo)")
         }
     }
 }

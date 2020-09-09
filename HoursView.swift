@@ -10,25 +10,29 @@ import SwiftUI
 
 struct HoursView: View {
     var hours: [Open]
+    var days: [String] = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]
     var body: some View {
         VStack {
-            self.display(day: "Monday", start: hours[0].start, end: hours[0].end)
-            self.display(day: "Tuesday", start: hours[1].start, end: hours[1].end)
-            self.display(day: "Wednesday", start: hours[2].start, end: hours[2].end)
-            self.display(day: "Thursday", start: hours[3].start, end: hours[3].end)
-            self.display(day: "Friday", start: hours[4].start, end: hours[4].end)
-            self.display(day: "Saturday", start: hours[5].start, end: hours[5].end)
-            if(hours.count>6) {
-                self.display(day: "Sunday", start: hours[6].start, end: hours[6].end)
-            } else {
-                Text("Sunday: Closed")
+            ForEach(0..<7) { number in
+                if(self.getIndex(number: number) == -1) {
+                    Text("\(self.days[number]): Closed")
+                }
+                else {
+                    self.display(day: number, number: self.getIndex(number: number))
+                }
             }
         }
     }
-
-    func display(day: String,start: String, end: String) -> some View {
+    func getIndex(number: Int) -> Int{
+        return hours.firstIndex(where: {$0.day==number}) ?? -1
+    }
+    func display(day: Int,number: Int) -> some View{
+        return self.displayHelp(day: self.days[day], start: self.hours[number].start, end: self.hours[number].end)
+    }
+    func displayHelp(day: String,start: String, end: String) -> some View {
         return Text("\(day): \(fix(time: start)) - \(fix(time: end))")
     }
+    
     func fix(time: String) -> String {
         let num = Int(time) ?? 0
         if(num >= 2200) {
@@ -47,5 +51,6 @@ struct HoursView: View {
         }
         
     }
+    
 }
 

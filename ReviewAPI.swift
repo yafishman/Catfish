@@ -34,26 +34,17 @@ class ReviewAPI: ObservableObject  {
             }
         }.resume()
     }
-    // create a FlightFetcher with certain search criteria ...
     init(id: String) {
         self.id = id
         fetchYelpBusinesses()
     }
     
-    // ... then update the criteria as desired ...
     var id: String {
         didSet { fetchYelpBusinesses() }
     }
-    
-    // ... and retrieve the latest results here ...
-    // @Published private(set) var latest = [Restaurant]()
-    
-    // MARK: - Private Implementation
-
-    // filters our results based on our flightSearch criteria
-       private func filter(results: [Review]) -> [Review] {
+    private func filter(results: [Review]) -> [Review] {
         return results.sorted {$0.time_created > $1.time_created}
-     }
+    }
 }
 
 

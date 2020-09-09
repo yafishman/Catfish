@@ -13,26 +13,26 @@ struct RestaurantRow: View {
     var isLiked: Bool
     var isDisliked: Bool
     var isWatched: Bool
-
+    
     var body: some View {
         HStack {
             ImageView(withURL: restaurant.image_url)
                 .frame(width: 50, height: 50)
             Text(restaurant.name)
             Spacer()
-
+            
             if isLiked {
                 Image(systemName: "heart.fill")
                     .imageScale(.medium)
                     .foregroundColor(.red)
             } else if isDisliked {
                 Image(systemName: "hand.thumbsdown")
-                .imageScale(.medium)
-                .foregroundColor(.black)
+                    .imageScale(.medium)
+                    .foregroundColor(.black)
             } else if isWatched {
                 Image(systemName: "eye")
-                .imageScale(.medium)
-                .foregroundColor(.blue)
+                    .imageScale(.medium)
+                    .foregroundColor(.blue)
             }
         }
     }

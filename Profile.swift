@@ -15,18 +15,17 @@ struct Profile {
     var possibles: [Restaurant]
     var dislikes: [Restaurant]
     var watchlist: [Restaurant]
-
-    var goalDate: Date
+    var visited: [Restaurant]
     
-    static let `default` = Self(username: "y_fishman", prefersNotifications: true, likes: [],possibles: [], dislikes: [], watchlist: [])
+    static let `default` = Self(username: "y_fishman", prefersNotifications: true, likes: [],possibles: [], dislikes: [], watchlist: [], visited: [])
     
-    init(username: String, prefersNotifications: Bool = true, likes: [Restaurant], possibles: [Restaurant], dislikes: [Restaurant], watchlist: [Restaurant]) {
+    init(username: String, prefersNotifications: Bool = true, likes: [Restaurant], possibles: [Restaurant], dislikes: [Restaurant], watchlist: [Restaurant], visited: [Restaurant]) {
         self.username = username
         self.prefersNotifications = prefersNotifications
-        self.goalDate = Date()
         self.likes = likes
         self.dislikes = dislikes
         self.possibles = possibles
         self.watchlist = watchlist
+        self.visited = visited
     }
 }

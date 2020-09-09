@@ -26,7 +26,7 @@ class DetailedAPI: ObservableObject  {
                 if let data = data {
                     do {
                         let res = try JSONDecoder().decode(DetailedAPIResponse.self, from: data)
-
+                        
                         self.photos = res.photos
                         self.hours = res.hours
                     } catch let error{
@@ -36,55 +36,14 @@ class DetailedAPI: ObservableObject  {
             }
         }.resume()
     }
-    // create a FlightFetcher with certain search criteria ...
     init(id: String) {
         self.id = id
         fetchYelpBusinesses()
     }
     
-    // ... then update the criteria as desired ...
     var id: String {
         didSet { fetchYelpBusinesses() }
     }
-    
-    // ... and retrieve the latest results here ...
-    // @Published private(set) var latest = [Restaurant]()
-    
-    // MARK: - Private Implementation
-
-    // filters our results based on our flightSearch criteria
-       private func filter(_ results: Set<Restaurant>) -> [Restaurant] {
-     return results
-//     .filter { restaurantSearch.airline == nil || $0.ident.hasPrefix(restaurantSearch.airline!) }
-//     .filter { restaurantSearch.origin == nil || $0.origin == restaurantSearch.origin || $0.ident.hasPrefix("K"+restaurantSearch.origin!) }
-//     .filter { !restaurantSearch.inTheAir || $0.departure != nil }
-     .sorted() // Flight implements Comparable (sorts by arrival time)
-     }
-     
-    // fires off a EnrouteRequest to FlightAware
-    // to get a list of flights heading toward our flightSearch.destination airport
-    // it runs periodically and publishes any FAFlight objects it finds
-    // (we also add all mentioned airports and airlines to Airports.all and Airlines.all here)
-    /*private func fetchFlights() {
-     flightAwareResultsCancellable = nil
-     flightAwareRequest?.stopFetching()
-     flightAwareRequest = nil
-     let icao = restaurantSearch.destination
-     flightAwareRequest = EnrouteRequest.create(airport: icao, howMany: 90)
-     flightAwareRequest?.fetch(andRepeatEvery: 30)
-     flightAwareResultsCancellable = flightAwareRequest?.results.sink { [weak self] results in
-     Airports.all.fetch(icao) // prefetch
-     results.forEach {
-     Airports.all.fetch($0.origin) // prefetch
-     Airlines.all.fetch($0.airlineCode) // prefetch
-     }
-     self?.latest = self?.filter(results) ?? []
-     }
-     }
-     
-     private(set) var flightAwareRequest: EnrouteRequest!
-     private var flightAwareResultsCancellable: AnyCancellable?
-     */
 }
 
 
@@ -98,7 +57,7 @@ struct Hours: Decodable{
     let hours_type : String
     let is_open_now : Bool
 }
-struct Open: Decodable {
+struct Open: Decodable, Hashable {
     let is_overnight : Bool
     let start: String
     let end: String

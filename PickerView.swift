@@ -11,12 +11,12 @@ import SwiftUI
 struct PickerView: View {
     @State var categories: [Category] = load("JSONData.json")
     @Binding var selections: [Category]
-
+    
     init(selections: Binding<[Category]>) {
         self._selections = selections
         
     }
-
+    
     var body: some View {
         VStack {
             List {
@@ -51,8 +51,8 @@ func load<Category: Decodable>(_ filename: String) -> [Category] {
     let data: Data
     
     guard let file = Bundle.main.url(forResource: filename, withExtension: nil)
-    else {
-        fatalError("Couldn't find \(filename) in main bundle.")
+        else {
+            fatalError("Couldn't find \(filename) in main bundle.")
     }
     
     do {

@@ -16,6 +16,7 @@ struct DetailedView: View {
     var restaurant: Restaurant
     var isPresented: Binding<Bool>
     @ObservedObject var detailedFetcher: DetailedAPI
+    @EnvironmentObject var userData: UserData
     var photos: [String] { detailedFetcher.photos}
     var hours: [Hours] { detailedFetcher.hours}
     init(_ restaurant: Restaurant,isPresented: Binding<Bool>) {
@@ -24,36 +25,19 @@ struct DetailedView: View {
         self.isPresented = isPresented
     }
     var body: some View {
-        NavigationView {
         VStack {
-//            if(!photos.isEmpty) {
-//                ImageView(withURL: photos[1])
-//                    //.resizable()
-//                    .edgesIgnoringSafeArea(.top)
-//                    .frame(height: 300)
-//            }
-            MapView(coordinate: CLLocationCoordinate2D(latitude: restaurant.coordinates.latitude, longitude: restaurant.coordinates.longitude),name: restaurant.name)
-                .edgesIgnoringSafeArea(.horizontal)
-            .frame(height: 450)
-                Button(action: {
-                    let formattedString = "http://maps.apple.com/?daddr=\(self.restaurant.name)&dirflg=d&t=m"
-                    guard let url = URL(string: formattedString) else { return }
-                    UIApplication.shared.open(url)
-                }) {
-                    VStack {
-                        Text(restaurant.location.display_address[0])
-                        Text(restaurant.location.display_address[1])
-                    }
-                }.padding().font(.subheadline)
-                    .font(.subheadline)
-                
-                    
-//                    .clipShape(Circle())
-//                    .overlay(Circle().stroke(Color.white, lineWidth: 4))
-//                    .shadow(radius: 10)
-//                    .offset(x: 0, y: -70)
-//                    .padding(.bottom, -70)
-//                    .frame(height: 150)
+            MapView(coordinate: CLLocationCoordinate2D(latitude: restaurant.coordinates.latitude, longitude: restaurant.coordinates.longitude),name: restaurant.name).frame(height: 400)
+            Button(action: {
+                let formattedString = "http://maps.apple.com/?daddr=\(self.restaurant.name)&dirflg=d&t=m"
+                guard let url = URL(string: formattedString) else { return }
+                UIApplication.shared.open(url)
+            }) {
+                VStack {
+                    Text(restaurant.location.display_address[0])
+                    Text(restaurant.location.display_address[1])
+                }
+            }.padding().font(.subheadline)
+                .font(.subheadline)
             
             Text(restaurant.name)
                 .font(.title).padding()
@@ -63,7 +47,8 @@ struct DetailedView: View {
                 HoursView(hours: hours[0].open)
                 
             }
-            
+            ButtonsView(current: self.restaurant).environmentObject(self.userData)
+                .padding().font(.title)
             HStack {
                 Button(action: {
                     let tel = "tel://\(self.restaurant.phone)"
@@ -79,23 +64,26 @@ struct DetailedView: View {
                     Image(systemName: "square.and.arrow.up").font(.title)
                 }
                 Spacer()
-                    NavigationLink(
-                        destination: ReviewsView(self.restaurant,isPresented: self.isPresented))
-                    {
-                        Text("See Reviews")
-                    }
+                //                    NavigationLink(
+                //                        destination: ReviewsView(self.restaurant,isPresented: self.isPresented))
+                //                    {
+                //                        Text("See Reviews")
+                //                    }
+                Button(action: {
+                    guard let url = URL(string: self.restaurant.url) else { return }
+                    UIApplication.shared.open(url)
+                }) {
+                    Image("yelp_logo").resizable().scaledToFit().frame(height: 40)
+                }.buttonStyle(PlainButtonStyle())
                 
             }.padding()
             
-        }.sheet(isPresented: $isShareShowing) {
-            ShareSheet(activityItems: [self.restaurant.url])
+        }.edgesIgnoringSafeArea(.all)
+            .sheet(isPresented: $isShareShowing) {
+                ShareSheet(activityItems: [self.restaurant.url])
         }
-        }
+        
     }
 }
 
-//struct DetailedView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        DetailedView(isPresented: true)
-//    }
-//}
+

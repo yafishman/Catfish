@@ -1,4 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1" systemVersion="11A491" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="false" userDefinedModelVersionIdentifier="">
-    <elements/>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="16119" systemVersion="19G2021" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Dislikes" representedClassName="Dislikes" syncable="YES" codeGenerationType="class">
+        <attribute name="dislikes" optional="YES" attributeType="Transformable" customClassName="Restaurants"/>
+    </entity>
+    <entity name="Likes" representedClassName="Likes" syncable="YES" codeGenerationType="class">
+        <attribute name="likes" optional="YES" attributeType="Transformable" customClassName="Restaurants"/>
+    </entity>
+    <entity name="Visited" representedClassName="Visited" syncable="YES" codeGenerationType="class">
+        <attribute name="visited" optional="YES" attributeType="Transformable" customClassName="Restaurants"/>
+    </entity>
+    <entity name="Watchlist" representedClassName="Watchlist" syncable="YES" codeGenerationType="class">
+        <attribute name="watchlist" optional="YES" attributeType="Transformable" customClassName="Restaurants"/>
+    </entity>
+    <elements>
+        <element name="Visited" positionX="-54" positionY="-9" width="128" height="58"/>
+        <element name="Watchlist" positionX="-54" positionY="18" width="128" height="58"/>
+        <element name="Dislikes" positionX="-45" positionY="27" width="128" height="58"/>
+        <element name="Likes" positionX="-27" positionY="36" width="128" height="58"/>
+    </elements>
 </model>

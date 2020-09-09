@@ -12,14 +12,10 @@ struct StarView: View {
     var rating: Double
     var body: some View {
         let flor = Int(rating)
-        return HStack {
-            ForEach(0..<flor, id: \.self) {_ in
-                Image(systemName: "star.fill")
-            }
-            if(floor(rating) != rating) {
-                Image(systemName: "star.lefthalf.fill")
-            }
-            
+        if(rating-Double(flor)==0.5) {
+            return Image("extra_large_\(flor)_half")
+        } else {
+            return Image("extra_large_\(flor)")
         }
     }
 }
