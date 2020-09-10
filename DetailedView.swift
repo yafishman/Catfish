@@ -19,7 +19,12 @@ struct DetailedView: View {
     @EnvironmentObject var userData: UserData
     var photos: [String] { detailedFetcher.photos}
     var hours: [Hours] { detailedFetcher.hours}
-    init(_ restaurant: Restaurant,isPresented: Binding<Bool>) {
+    init(_ restaurant: Restaurant, detailed: DetailedAPI, isPresented: Binding<Bool>) {
+        self.detailedFetcher = detailed
+        self.restaurant = restaurant
+        self.isPresented = isPresented
+    }
+    init(_ restaurant: Restaurant, isPresented: Binding<Bool>) {
         self.detailedFetcher = DetailedAPI(id: restaurant.id)
         self.restaurant = restaurant
         self.isPresented = isPresented

@@ -36,6 +36,8 @@ struct RestaurantSearch {
 
 struct SwipeView: View {
     @EnvironmentObject var userData: UserData
+    @State private var offset: CGFloat = 0
+    @State private var animation: Animation = Animation.default
     @ObservedObject var restaurantFetcher: RestaurantAPI
     @State var sheetView: String = "detail"
     @State private var showSheet = false
@@ -51,7 +53,8 @@ struct SwipeView: View {
     @State private var index = 0
     @State private var photoIndex = 0
     var current: Restaurant { if(index>=restaurants.count) {return Restaurant(id: "null")} else {return restaurants[index]}}
-    
+    var detailedFetcher: DetailedAPI {DetailedAPI(id: current.id)}
+
     var body: some View {
         VStack {
             HStack {
@@ -98,13 +101,22 @@ struct SwipeView: View {
                     .foregroundColor(Color.black)
                     GeometryReader { geometry in
                         
-                        PhotosView(restaurant: self.current, index: self.photoIndex)
-                            .gesture(DragGesture(minimumDistance: 0.0, coordinateSpace: .local).onEnded { value in
+                        //PhotosView(restaurant: self.current, index: self.photoIndex)
+                        PhotosView(restaurant: self.current, detailed: self.detailedFetcher, index: self.photoIndex)
+                            .gesture(DragGesture(minimumDistance: 0.0, coordinateSpace: .local)
+                                .onChanged({ value in
+                                    self.offset = value.translation.width - geometry.size.width * CGFloat(self.index)
+                                })
+                                .onEnded { value in
                                 if (abs(value.translation.width)+abs(value.translation.height)) < 100.0 {
                                     if(value.startLocation.x >= geometry.size.width/2) {//right half
                                         self.photoIndex += 1
+                                        self.animation = Animation.easeInOut
+
                                     } else {
                                         self.photoIndex -= 1
+                                        self.animation = Animation.easeInOut
+
                                     }
                                 } else {
                                     if value.translation.height < 0 && value.translation.width < 100 && value.translation.width > -100 {//UP
@@ -114,12 +126,18 @@ struct SwipeView: View {
                                         self.userData.possibles.append(self.current)
                                         self.index += 1
                                         self.photoIndex = 0
+                                        self.animation = Animation.interactiveSpring()
                                     } else if (value.translation.width > 0 && value.translation.height > -30 && value.translation.height < 30) {//Left
                                         self.index += 1
                                         self.photoIndex = 0
+                                        self.animation = Animation.interactiveSpring()
                                     }
                                 }
-                            })}
+                                 //withAnimation { self.offset = -(geometry.size.width + 10) * CGFloat(self.index) }
+                            })
+                                
+                        
+                    }.animation(self.animation)
                     HStack {
                         ForEach(current.transactions, id: \.self) { cat in
                             Text(cat.capitalized)
@@ -146,7 +164,7 @@ struct SwipeView: View {
                         }.buttonStyle(PlainButtonStyle())
                     }
                     
-                }
+                }.transition(AnyTransition.slide).animation(.linear)
             } else {
                 Spacer()
                 EmptyRestaurantView()
@@ -156,7 +174,7 @@ struct SwipeView: View {
             //.offset(y: -80)
             .sheet(isPresented: $showSheet) {
                 if(self.sheetView=="detail") {
-                    DetailedView(self.current, isPresented: self.$showSheet).environmentObject(self.userData)
+                    DetailedView(self.current,detailed: self.detailedFetcher, isPresented: self.$showSheet).environmentObject(self.userData)
                 } else if (self.sheetView=="visited") {
                     ProfileView(isPresented: self.$showSheet).environmentObject(self.userData)
                 } else if (self.sheetView=="possible") {
@@ -192,16 +210,27 @@ struct SwipeView: View {
                 self.userData.watchlist.contains($0)
             }
         }
+        if(restaurantFetcher.restaurantSearch.categories.firstIndex(where: { $0.alias=="anything"
+        }) == nil) {
+            var belongs: Bool
+            for restaurant in end {
+                belongs = false
+                for category in restaurant.categories {
+                    if(restaurantFetcher.restaurantSearch.categories.contains(where: {$0.alias==category.alias})) {
+                        belongs = true
+                    }
+                }
+                if !belongs {
+                    end.remove(at: end.firstIndex(of: restaurant)!)
+                }
+            }
+            
+        }
         return end
     }
     
 }
 
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        SwipeView(RestaurantSearch(categories: [Category(alias: "anything")], price: 4, transactions: ["delivery","pickup"], distance: 5.0, rating: 3))
-    }
-}
 
 struct ActivityIndicator: UIViewRepresentable {
     

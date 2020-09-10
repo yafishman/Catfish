@@ -25,7 +25,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         // Create the SwiftUI view and set the context as the value for the managedObjectContext environment keyPath.
         // Add `@Environment(\.managedObjectContext)` in the views that will need the context.
-        let contentView = CatfishView(restaurantSearch: RestaurantSearch(categories: [Category(alias: "anything")], price: 1, transactions: ["delivery","pickup"], distance: 10.0, rating: 1)).environment(\.managedObjectContext, context).environmentObject(UserData())
+        let contentView = CatfishView(restaurantSearch: RestaurantSearch(categories: [Category(alias: "anything", title: "Anything")], price: 4, transactions: [], distance: 10.0, rating: 1)).environment(\.managedObjectContext, context).environmentObject(UserData())
 
         // Use a UIHostingController as window root view controller.
         if let windowScene = scene as? UIWindowScene {

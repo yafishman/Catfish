@@ -132,6 +132,10 @@
         "title": "Mexican"
     },
     {
+        "alias": "mideastern",
+        "title": "Middle Eastern"
+    },
+    {
         "alias": "pizza",
         "title": "Pizza"
     },

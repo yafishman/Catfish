@@ -16,27 +16,40 @@ struct PhotosView: View {
     @ObservedObject var detailedFetcher: DetailedAPI
     var photos: [String] { detailedFetcher.photos}
     var maxIndex: Int { photos.count}
-    init(restaurant: Restaurant, index: Int) {
-        self.detailedFetcher = DetailedAPI(id: restaurant.id)
+//    init(restaurant: Restaurant, index: Int) {
+//        self.detailedFetcher = DetailedAPI(id: restaurant.id)
+//        self.restaurant = restaurant
+//        self.index = index
+//    }
+    init(restaurant: Restaurant, detailed: DetailedAPI, index: Int) {
+        self.detailedFetcher = detailed
         self.restaurant = restaurant
         self.index = index
     }
-    
     var body: some View {
         VStack(alignment: .center) {
             GeometryReader { geometry in
                 HStack(spacing: 0) {
-                    if(self.maxIndex==0) {
-                        ImageView(withURL: self.restaurant.image_url)
-                            .frame(width: geometry.size.width, height: geometry.size.height)
-                            .clipped()
+                    if(self.detailedFetcher.loading == true) {
+                        Spacer()
+                        ActivityIndicator(isAnimating: .constant(true), style: .large)
+                        Spacer()
                     } else {
-                        ImageView(withURL: self.photos[self.clampedIndex(predictedIndex: self.index)] )
-                            .frame(width: geometry.size.width, height: geometry.size.height)
-                            .clipped()
+                        if(self.maxIndex==0) {
+                            ImageView(withURL: self.restaurant.image_url)
+                                .frame(width: geometry.size.width, height: geometry.size.height)
+                                .clipped()
+                        } else {
+                            ImageView(withURL: self.photos[self.clampedIndex(predictedIndex: self.index)] )
+                                .frame(width: geometry.size.width, height: geometry.size.height)
+                                .clipped()
+                            
+                        }
                     }
                     
-                }
+                    
+                }.shadow(radius: 12.0)
+                .cornerRadius(12.0)
                 .frame(width: geometry.size.width, alignment: .leading)
                 
             }

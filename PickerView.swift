@@ -22,8 +22,11 @@ struct PickerView: View {
             List {
                 ForEach(self.categories, id: \.self) { item in
                     Button(action: {
-                        if self.selections.contains(item) {
-                            self.selections.removeAll(where: { $0 == item })
+                        if self.selections.contains(where: {$0.alias==item.alias}) {
+                            self.selections.removeAll(where: {$0.alias==item.alias})
+                            if self.selections.isEmpty {
+                                self.selections.append(Category(alias: "anything", title: "Anything"))
+                            }
                         }
                         else {
                             self.selections.removeAll(where: { $0.title == "Anything" })
@@ -35,7 +38,7 @@ struct PickerView: View {
                     }) {
                         HStack {
                             Text(item.title)
-                            if self.selections.contains(item) {
+                            if self.selections.contains(where: {$0.alias==item.alias}) {
                                 Spacer()
                                 Image(systemName: "checkmark")
                             }

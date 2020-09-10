@@ -13,8 +13,9 @@ import CoreLocation
 class DetailedAPI: ObservableObject  {
     @Published private(set) var photos = [String]()
     @Published private(set) var hours = [Hours]()
-    
+    @Published var loading = false
     private func fetchYelpBusinesses(){
+        self.loading = true
         let apikey = "f39JuduMAARLpxiyqvPL7-V1WxoxVwxziGeQNtt-h0a4V_nKs19-WJaDNa2uqG7vLFyvFj3c8PuT93h89t_CyRg13kTkTWXHy08x1rol709pnKgW8ET9ACK_l-A2X3Yx"
         let url = URL(string: "https://api.yelp.com/v3/businesses/\(id)")
         var request = URLRequest(url: url!)
@@ -28,6 +29,7 @@ class DetailedAPI: ObservableObject  {
                         let res = try JSONDecoder().decode(DetailedAPIResponse.self, from: data)
                         
                         self.photos = res.photos
+                        self.loading = false
                         self.hours = res.hours
                     } catch let error{
                         print(error)

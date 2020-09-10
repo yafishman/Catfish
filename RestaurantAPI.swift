@@ -40,14 +40,11 @@ class RestaurantAPI: ObservableObject {
                 price += ",3"
                 if(restaurantSearch.price>=4) {
                     price += ",4"
-                    if(restaurantSearch.price>=5) {
-                        price += ",5"
-                    }
                 }
             }
         }
         let apikey = "f39JuduMAARLpxiyqvPL7-V1WxoxVwxziGeQNtt-h0a4V_nKs19-WJaDNa2uqG7vLFyvFj3c8PuT93h89t_CyRg13kTkTWXHy08x1rol709pnKgW8ET9ACK_l-A2X3Yx"
-        let url = URL(string: "https://api.yelp.com/v3/businesses/search?limit=50&latitude=\(self.latitude)&longitude=\(self.longitude)&categories=restaurants&price=\(price)&open_now=\(restaurantSearch.isOpen)&radius=\(distance)")
+        let url = URL(string: "https://api.yelp.com/v3/businesses/search?limit=50&latitude=38.654154&longitude=-90.307697&categories=restaurants&price=\(price)&open_now=\(restaurantSearch.isOpen)&radius=\(distance)")
         var request = URLRequest(url: url!)
         request.setValue("Bearer \(apikey)", forHTTPHeaderField: "Authorization")
         request.httpMethod = "GET"
@@ -60,7 +57,6 @@ class RestaurantAPI: ObservableObject {
                         
                         //self.restaurants = self.filter(res.businesses).shuffled()
                         self.restaurants = res.businesses.shuffled()
-                        print(self.restaurants.count)
                         self.loading = false
                     } catch let error{
                         print(error)
@@ -103,8 +99,8 @@ class RestaurantAPI: ObservableObject {
 
 
 struct RestaurantAPIResponse: Decodable{
-    let region : Region
-    let total : Int
+    //let region : Region
+    //let total : Int
     let businesses : [Restaurant]
 }
 

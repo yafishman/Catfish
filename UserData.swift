@@ -14,16 +14,14 @@ import CoreData
 final class UserData: ObservableObject {
     @Published var showFavoritesOnly = false
     //show likes,not views,disliked
-    //@Published var profile = Profile.default
-    @Published var username: String = UserDefaults.standard.string(forKey: "username") ?? ""
-    @Published var prefersNotifications: Bool = UserDefaults.standard.bool(forKey: "notifications")
+    @Published var username: String = "Yak"
+    @Published var prefersNotifications: Bool = false
     @Published var likes: [Restaurant] = []
     @Published var possibles: [Restaurant] = []
     @Published var dislikes: [Restaurant] = []
     @Published var watchlist: [Restaurant] =  []
     @Published var visited: [Restaurant] = []
     init() {
-        //createData()
         getSavedData()
     }
     func getSavedData() {

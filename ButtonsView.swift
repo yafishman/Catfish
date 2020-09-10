@@ -16,7 +16,7 @@ struct ButtonsView: View {
     var body: some View {
         HStack(spacing: self.spacing) {
             Button(action: {
-                if self.userData.visited.contains(self.current) {
+                if self.userData.visited.contains(where: {$0.id==self.current.id}) {
                     self.userData.visited.removeAll {$0.id==self.current.id}
                     self.deleteData(id: self.current.id, list: "Visited")
                 } else {
@@ -28,14 +28,14 @@ struct ButtonsView: View {
                 }
                 
             }) {
-                if self.userData.visited.contains(self.current) {
+                if self.userData.visited.contains(where: {$0.id==self.current.id}) {
                     Image(systemName: "tortoise.fill")
                 } else {
                     Image(systemName: "tortoise")
                 }
             }
             Button(action: {
-                if self.userData.dislikes.contains(self.current) {
+                if self.userData.dislikes.contains(where: {$0.id==self.current.id}) {
                     self.userData.dislikes.removeAll {$0.id==self.current.id}
                     self.deleteData(id: self.current.id, list: "Dislikes")
                     
@@ -43,7 +43,7 @@ struct ButtonsView: View {
                     self.userData.dislikes.append(self.current)
                     self.addData(restaurants: self.userData.dislikes, list: "Dislikes")
                     
-                    if !self.userData.visited.contains(self.current) {
+                    if !self.userData.visited.contains(where: {$0.id==self.current.id}) {
                         self.userData.visited.append(self.current)
                         self.addData(restaurants: self.userData.visited, list: "Visited")
                     }
@@ -54,7 +54,7 @@ struct ButtonsView: View {
                     
                 }
             }) {
-                if self.userData.dislikes.contains(self.current) {
+                if self.userData.dislikes.contains(where: {$0.id==self.current.id}) {
                     Image(systemName: "hand.thumbsdown.fill")
                 } else {
                     Image(systemName: "hand.thumbsdown")
@@ -62,7 +62,7 @@ struct ButtonsView: View {
                 
             }
             Button(action: {
-                if self.userData.watchlist.contains(self.current) {
+                if self.userData.watchlist.contains(where: {$0.id==self.current.id}) {
                     self.userData.watchlist.removeAll {$0.id==self.current.id}
                     self.deleteData(id: self.current.id, list: "Watchlist")
                     
@@ -77,14 +77,14 @@ struct ButtonsView: View {
                     
                 }
             }) {
-                if self.userData.watchlist.contains(self.current) {
+                if self.userData.watchlist.contains(where: {$0.id==self.current.id}) {
                     Image(systemName: "bookmark.fill")
                 } else {
                     Image(systemName: "bookmark")
                 }
             }
             Button(action: {
-                if self.userData.likes.contains(self.current) {
+                if self.userData.likes.contains(where: {$0.id==self.current.id}) {
                     self.userData.likes.removeAll {$0.id==self.current.id}
                     self.deleteData(id: self.current.id, list: "Likes")
                     
@@ -92,7 +92,7 @@ struct ButtonsView: View {
                     self.userData.likes.append(self.current)
                     self.addData(restaurants: self.userData.likes, list: "Likes")
                     
-                    if !self.userData.visited.contains(self.current) {
+                    if !self.userData.visited.contains(where: {$0.id==self.current.id}) {
                         self.userData.visited.append(self.current)
                         self.addData(restaurants: self.userData.visited, list: "Visited")
                     }
@@ -103,7 +103,7 @@ struct ButtonsView: View {
                     
                 }
             }) {
-                if self.userData.likes.contains(self.current) {
+                if self.userData.likes.contains(where: {$0.id==self.current.id}) {
                     Image(systemName: "hand.thumbsup.fill")
                 } else {
                     Image(systemName: "hand.thumbsup")

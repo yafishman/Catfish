@@ -24,7 +24,6 @@ struct ProfileView: View {
                     Text("Disliked").tag(3)
                 }.pickerStyle(SegmentedPickerStyle())
                 SearchBar(text: $searchText)
-                
                 List {
                     if (self.filter == 1) {
                         display(restaurants: userData.likes.filter({ searchText.isEmpty ? true : $0.name.localizedCaseInsensitiveContains(searchText) }))
@@ -38,7 +37,8 @@ struct ProfileView: View {
                     
                 }.navigationBarTitle(Text("Visited Restaurants"))
                 
-            }
+            }.blur(radius: self.buttons ? 10 : 0)
+
         }
     }
     func display(restaurants: [Restaurant]) -> some View {
@@ -47,9 +47,9 @@ struct ProfileView: View {
             NavigationLink(
                 destination: DetailedView(restaurant, isPresented: self.$isPresented)
             ) {
-                RestaurantRow(restaurant: restaurant, isLiked: self.userData.likes.contains(restaurant),
-                              isDisliked: self.userData.dislikes.contains(restaurant),
-                              isWatched: self.userData.watchlist.contains(restaurant))
+                RestaurantRow(restaurant: restaurant, isLiked: self.userData.likes.contains(where: {$0.id==restaurant.id}),
+                              isDisliked: self.userData.dislikes.contains(where: {$0.id==restaurant.id}),
+                              isWatched: self.userData.watchlist.contains(where: {$0.id==restaurant.id}))
                 
                 
                 
@@ -57,10 +57,10 @@ struct ProfileView: View {
             //.sheet(isPresented: self.$buttons) {
             
             // }
-            //            .simultaneousGesture(LongPressGesture()
-            //            .onEnded { _ in
-            //                self.buttons.toggle()
-            //            })
+//                        .highPriorityGesture(LongPressGesture()
+//                        .onEnded { _ in
+//                            self.buttons.toggle()
+//                        })
             
         }
         

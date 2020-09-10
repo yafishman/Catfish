@@ -21,9 +21,9 @@ struct ListView: View {
                     NavigationLink(
                         destination: DetailedView(restaurant, isPresented: self.$isPresented)
                     ) {
-                        RestaurantRow(restaurant: restaurant, isLiked: self.userData.likes.contains(restaurant),
-                                      isDisliked: self.userData.dislikes.contains(restaurant),
-                                      isWatched: self.userData.watchlist.contains(restaurant))
+                        RestaurantRow(restaurant: restaurant, isLiked: self.userData.likes.contains(where: {$0.id==restaurant.id}),
+                                      isDisliked: self.userData.dislikes.contains(where: {$0.id==restaurant.id}),
+                                      isWatched: self.userData.watchlist.contains(where: {$0.id==restaurant.id}))
                     }
                 }.onDelete(perform: delete)
                 

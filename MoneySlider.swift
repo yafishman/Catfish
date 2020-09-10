@@ -13,7 +13,7 @@ struct MoneySlider: View {
     
     var label = ""
     
-    var maximumRating = 5
+    var maximumRating = 4
     
     var offImage: Image?
     var onImage = Image(systemName: "dollarsign.circle.fill")
