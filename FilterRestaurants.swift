@@ -9,6 +9,7 @@
 
 import SwiftUI
 
+
 struct FilterRestaurants: View {
     
     @Binding var restaurantSearch: RestaurantSearch
@@ -18,17 +19,26 @@ struct FilterRestaurants: View {
     @State var percentage: Float = 50
     @State var deliv: Bool
     @State var pickup: Bool
-    
+    @State var searchText: String = ""
     init(restaurantSearch: Binding<RestaurantSearch>, isPresented: Binding<Bool>) {
         _restaurantSearch = restaurantSearch
         _isPresented = isPresented
         _draft = State(wrappedValue: restaurantSearch.wrappedValue)
         _deliv = State(wrappedValue: restaurantSearch.wrappedValue.transactions.contains("delivery"))
         _pickup = State(wrappedValue: restaurantSearch.wrappedValue.transactions.contains("pickup"))
+        setup()
+    }
+    func setup() {
+ 
     }
     var body: some View {
         NavigationView {
             Form {
+//                VStack {
+//                    Text("Location")
+//                    FilterSearchBar(text: $searchText)
+//                }
+                
                 HStack {
                     Text("Max Price")
                     Spacer()
@@ -36,9 +46,9 @@ struct FilterRestaurants: View {
                 }
                 VStack {
                     HStack {
-                        Text("0.5 mi")
-                        Slider(value: $draft.distance, in: 0.5...30, step: 0.5)
-                        Text("30 mi")
+                        Text("0.2 mi")
+                        Slider(value: $draft.distance, in: 0.2...25, step: 0.1)
+                        Text("25 mi")
                     }
                     Text("\(String(format: "%.1f", draft.distance)) mi away")
                 }
@@ -88,9 +98,21 @@ struct FilterRestaurants: View {
                     }
                     
                 }
+                Button(action: {
+                        self.draft.isOpen.toggle()
+                    
+                }) {
+                    HStack {
+                        Text("Open Now")
+                        Spacer()
+                        if self.draft.isOpen {
+                            Image(systemName: "checkmark")
+                        }
+                    }
+                    
+                }
                 HStack {
                     Toggle(isOn: $draft.isOpen) { Text("Open now") }
-                    Toggle(isOn: $draft.onlyWatchlist) { Text("Only watchlist") }
                 }
                 HStack {
                     Toggle(isOn: $draft.hideDisliked) { Text("Hide disliked") }

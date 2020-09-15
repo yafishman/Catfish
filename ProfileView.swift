@@ -26,46 +26,53 @@ struct ProfileView: View {
                 SearchBar(text: $searchText)
                 List {
                     if (self.filter == 1) {
-                        display(restaurants: userData.likes.filter({ searchText.isEmpty ? true : $0.name.localizedCaseInsensitiveContains(searchText) }))
+                        display(restaurants: userData.likes.filter({ searchText.isEmpty ? true : $0.name.localizedCaseInsensitiveContains(searchText) || $0.location.city.localizedCaseInsensitiveContains(searchText)}))
                     } else if (self.filter == 2) {
-                        display(restaurants: userData.watchlist.filter({ searchText.isEmpty ? true : $0.name.localizedCaseInsensitiveContains(searchText) }))
+                        display(restaurants: userData.watchlist.filter({ searchText.isEmpty ? true : $0.name.localizedCaseInsensitiveContains(searchText) || $0.location.city.localizedCaseInsensitiveContains(searchText) }))
                     } else if (self.filter == 3) {
-                        display(restaurants: userData.dislikes.filter({ searchText.isEmpty ? true : $0.name.localizedCaseInsensitiveContains(searchText) }))
+                        display(restaurants: userData.dislikes.filter({ searchText.isEmpty ? true : $0.name.localizedCaseInsensitiveContains(searchText) || $0.location.city.localizedCaseInsensitiveContains(searchText) }))
                     } else {
-                        display(restaurants: userData.visited.filter({ searchText.isEmpty ? true : $0.name.localizedCaseInsensitiveContains(searchText) })).zIndex(10)
+                        display(restaurants: userData.visited.filter({ searchText.isEmpty ? true : $0.name.localizedCaseInsensitiveContains(searchText) || $0.location.city.localizedCaseInsensitiveContains(searchText) })).zIndex(10)
                     }
                     
                 }.navigationBarTitle(Text("Visited Restaurants"))
                 
             }.blur(radius: self.buttons ? 10 : 0)
-
+            
         }
     }
     func display(restaurants: [Restaurant]) -> some View {
         
-        return  ForEach(restaurants, id: \.self) { restaurant in
+        return ForEach(restaurants, id: \.self) { restaurant in
             NavigationLink(
-                destination: DetailedView(restaurant, isPresented: self.$isPresented)
-            ) {
+            destination: NavigationLazyView(DetailedView(restaurant, detailed: DetailedAPI(id: restaurant.id), isPresented: self.$isPresented))) {
                 RestaurantRow(restaurant: restaurant, isLiked: self.userData.likes.contains(where: {$0.id==restaurant.id}),
                               isDisliked: self.userData.dislikes.contains(where: {$0.id==restaurant.id}),
-                              isWatched: self.userData.watchlist.contains(where: {$0.id==restaurant.id}))
-                
-                
-                
-            }
+                              isWatched: self.userData.watchlist.contains(where: {$0.id==restaurant.id})) }
+            
             //.sheet(isPresented: self.$buttons) {
             
             // }
-//                        .highPriorityGesture(LongPressGesture()
-//                        .onEnded { _ in
-//                            self.buttons.toggle()
-//                        })
+            //                        .highPriorityGesture(LongPressGesture()
+            //                        .onEnded { _ in
+            //                            self.buttons.toggle()
+            //                        })
             
+        }.onDelete(perform: delete)
+        
+        
+        
+    }
+    func delete(at offsets: IndexSet) {
+        if (self.filter == 1) {
+            self.userData.likes.remove(atOffsets: offsets)
+        } else if (self.filter == 2) {
+            self.userData.watchlist.remove(atOffsets: offsets)
+        } else if (self.filter == 3) {
+            self.userData.dislikes.remove(atOffsets: offsets)
+        } else {
+            self.userData.visited.remove(atOffsets: offsets)
         }
-        
-        
-        
     }
     
 }

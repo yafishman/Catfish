@@ -29,8 +29,8 @@ class DetailedAPI: ObservableObject  {
                         let res = try JSONDecoder().decode(DetailedAPIResponse.self, from: data)
                         
                         self.photos = res.photos
-                        self.loading = false
                         self.hours = res.hours
+                        self.loading = false
                     } catch let error{
                         print(error)
                     }

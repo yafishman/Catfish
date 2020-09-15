@@ -18,21 +18,24 @@ struct RestaurantRow: View {
         HStack {
             ImageView(withURL: restaurant.image_url)
                 .frame(width: 50, height: 50)
-            Text(restaurant.name)
+            VStack(alignment: .leading) {
+            Text(restaurant.name).bold()
+            Text("\(restaurant.location.city), \(restaurant.location.state)").font(.footnote)
+            }
             Spacer()
             
             if isLiked {
-                Image(systemName: "heart.fill")
+                Image(systemName: "hand.thumbsup.fill")
+                    .imageScale(.medium)
+                    .foregroundColor(.green)
+            } else if isDisliked {
+                Image(systemName: "hand.thumbsdown.fill")
                     .imageScale(.medium)
                     .foregroundColor(.red)
-            } else if isDisliked {
-                Image(systemName: "hand.thumbsdown")
-                    .imageScale(.medium)
-                    .foregroundColor(.black)
             } else if isWatched {
-                Image(systemName: "eye")
+                Image(systemName: "bookmark.fill")
                     .imageScale(.medium)
-                    .foregroundColor(.blue)
+                    .foregroundColor(.orange)
             }
         }
     }

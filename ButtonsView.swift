@@ -55,7 +55,7 @@ struct ButtonsView: View {
                 }
             }) {
                 if self.userData.dislikes.contains(where: {$0.id==self.current.id}) {
-                    Image(systemName: "hand.thumbsdown.fill")
+                    Image(systemName: "hand.thumbsdown.fill").foregroundColor(.red)
                 } else {
                     Image(systemName: "hand.thumbsdown")
                 }
@@ -78,7 +78,7 @@ struct ButtonsView: View {
                 }
             }) {
                 if self.userData.watchlist.contains(where: {$0.id==self.current.id}) {
-                    Image(systemName: "bookmark.fill")
+                    Image(systemName: "bookmark.fill").foregroundColor(.orange)
                 } else {
                     Image(systemName: "bookmark")
                 }
@@ -104,7 +104,7 @@ struct ButtonsView: View {
                 }
             }) {
                 if self.userData.likes.contains(where: {$0.id==self.current.id}) {
-                    Image(systemName: "hand.thumbsup.fill")
+                    Image(systemName: "hand.thumbsup.fill").foregroundColor(.green)
                 } else {
                     Image(systemName: "hand.thumbsup")
                 }

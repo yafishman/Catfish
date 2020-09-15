@@ -18,7 +18,8 @@ class ImageLoader: ObservableObject {
     
     init(urlString:String) {
         self.urlString = urlString
-        loadImage()
+        //loadImage()
+        loadImageFromURL()
     }
     func loadImage() {
         if loadImageFromCache() {

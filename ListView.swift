@@ -18,13 +18,12 @@ struct ListView: View {
         NavigationView {
             List {
                 ForEach(userData.possibles, id: \.self) { restaurant in
-                    NavigationLink(
-                        destination: DetailedView(restaurant, isPresented: self.$isPresented)
-                    ) {
-                        RestaurantRow(restaurant: restaurant, isLiked: self.userData.likes.contains(where: {$0.id==restaurant.id}),
-                                      isDisliked: self.userData.dislikes.contains(where: {$0.id==restaurant.id}),
-                                      isWatched: self.userData.watchlist.contains(where: {$0.id==restaurant.id}))
-                    }
+
+                    NavigationLink(destination: NavigationLazyView(DetailedView(restaurant, detailed: DetailedAPI(id: restaurant.id), isPresented: self.$isPresented))) {
+                    RestaurantRow(restaurant: restaurant, isLiked: self.userData.likes.contains(where: {$0.id==restaurant.id}),
+                                  isDisliked: self.userData.dislikes.contains(where: {$0.id==restaurant.id}),
+                                  isWatched: self.userData.watchlist.contains(where: {$0.id==restaurant.id})) }
+
                 }.onDelete(perform: delete)
                 
             }.navigationBarTitle(Text("\(title) Restaurants")).navigationBarItems(trailing: deleteAll)
@@ -56,5 +55,14 @@ struct ListView: View {
         } catch let error as NSError {
             print("error : \(error) \(error.userInfo)")
         }
+    }
+}
+struct NavigationLazyView<Content: View>: View {
+    let build: () -> Content
+    init(_ build: @autoclosure @escaping () -> Content) {
+        self.build = build
+    }
+    var body: Content {
+        build()
     }
 }

@@ -19,7 +19,8 @@ struct CatfishView: View {
                 FilterRestaurants(restaurantSearch: self.$restaurantSearch, isPresented: self.$showSheet)
             }.padding()
             SwipeView(restaurantSearch)
-        }
+        }.background(Rectangle().fill(Color.gray).opacity(0.1).edgesIgnoringSafeArea(.all))
+
         
         
         

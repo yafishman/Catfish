@@ -27,6 +27,26 @@ class RestaurantAPI: ObservableObject {
         didSet { fetchYelpBusinesses() }
     }
     private func fetchYelpBusinesses(){
+               // let geocoder = CLGeocoder()
+                    
+                // Look up the location and pass it to the completion handler
+       // if( !(self.lm.location==nil)) {
+//            //let newLoc = CLLocation(latitude: lm.location?.latitude ?? 0, longitude: lm.location?.longitude ?? 0)
+//        let newLoc = CLLocation(latitude: 38.654154, longitude: -90.307697)
+//        geocoder.reverseGeocodeLocation(newLoc,
+//                            completionHandler: { (placemarks, error) in
+//                    if error == nil {
+//                       // let firstLocation = placemarks?[0]
+//                        //print(placemarks)
+//                        //completionHandler(firstLocation)
+//
+//                    }
+//                    else {
+//                     // An error occurred during geocoding.
+//                        //completionHandler(nil)
+//                    }
+//                })
+        //}
         self.loading = true
         //let longitude = -90.307697 // STL
         //let latitude = 38.654154
@@ -44,7 +64,7 @@ class RestaurantAPI: ObservableObject {
             }
         }
         let apikey = "f39JuduMAARLpxiyqvPL7-V1WxoxVwxziGeQNtt-h0a4V_nKs19-WJaDNa2uqG7vLFyvFj3c8PuT93h89t_CyRg13kTkTWXHy08x1rol709pnKgW8ET9ACK_l-A2X3Yx"
-        let url = URL(string: "https://api.yelp.com/v3/businesses/search?limit=50&latitude=38.654154&longitude=-90.307697&categories=restaurants&price=\(price)&open_now=\(restaurantSearch.isOpen)&radius=\(distance)")
+        let url = URL(string: "https://api.yelp.com/v3/businesses/search?limit=50&latitude=\(self.latitude)&longitude=\(self.longitude)&categories=restaurants&price=\(price)&open_now=\(restaurantSearch.isOpen)&radius=\(distance)")
         var request = URLRequest(url: url!)
         request.setValue("Bearer \(apikey)", forHTTPHeaderField: "Authorization")
         request.httpMethod = "GET"

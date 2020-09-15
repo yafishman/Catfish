@@ -45,9 +45,12 @@ struct HoursView: View {
             return("Noon")
         } else if(num == 0) {
             return("Midnight")
+        } else if(num >= 1000) {
+            return("\(time.prefix(2)):\(time.suffix(2)) AM")
         }
         else {
-            return("\(time.prefix(2)):\(time.suffix(2)) AM")
+            let chopped = time.dropFirst()
+            return("\(chopped.prefix(1)):\(time.suffix(2)) AM")
         }
         
     }

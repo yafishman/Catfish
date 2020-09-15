@@ -12,10 +12,11 @@ struct PhotosView: View {
     
     var restaurant: Restaurant
     var index: Int
-    
     @ObservedObject var detailedFetcher: DetailedAPI
     var photos: [String] { detailedFetcher.photos}
     var maxIndex: Int { photos.count}
+    @Environment(\.colorScheme) var colorScheme
+
 //    init(restaurant: Restaurant, index: Int) {
 //        self.detailedFetcher = DetailedAPI(id: restaurant.id)
 //        self.restaurant = restaurant
@@ -54,8 +55,12 @@ struct PhotosView: View {
                 
             }
             .clipped()
-            
-            PageControl(index: self.clampedIndex(predictedIndex: self.index), maxIndex: self.maxIndex)
+            if(self.colorScheme == .dark) {
+                PageControl(index: self.clampedIndex(predictedIndex: self.index), maxIndex: self.maxIndex, color: Color.white)
+            } else {
+                PageControl(index: self.clampedIndex(predictedIndex: self.index), maxIndex: self.maxIndex, color: Color.black)
+
+            }
         }
     }
     
@@ -75,13 +80,14 @@ struct PhotosView: View {
 struct PageControl: View {
     var index: Int
     let maxIndex: Int
-    
+    let color: Color
     var body: some View {
         HStack(spacing: 8) {
             ForEach(0..<maxIndex, id: \.self) { index in
-                Circle()
-                    .fill(index == self.index ? Color.gray : Color.black)
+                    Circle()
+                        .foregroundColor(index == self.index ? Color.gray : self.color)
                     .frame(width: 8, height: 8)
+                
             }
         }
         
