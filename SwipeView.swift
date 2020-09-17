@@ -66,8 +66,6 @@ struct SwipeView: View {
             cache.set(forKey: current.id, image: DetailedAPI(id: current.id))
             return DetailedAPI(id: current.id)
         }
-        
-        
     }
     
     var body: some View {
@@ -119,10 +117,8 @@ struct SwipeView: View {
                             Text("\(self.current.distanceMiles, specifier: "%.2f") mi away").font(.callout).italic()
                             Text(self.current.is_closed ? "Closed" : "Open Now").foregroundColor(self.current.is_closed ? .red : .green)
                         }
-                        
                         //PhotosView(restaurant: self.current, index: self.photoIndex)
                         ZStack {
-                            
                             PhotosView(restaurant: self.current, detailed: self.detailedFetcher, index: self.photoIndex).sheet(isPresented: self.$detailed) {
                                 DetailedView(self.current, detailed: self.detailedFetcher, isPresented: self.$detailed).environmentObject(self.userData)
                             }

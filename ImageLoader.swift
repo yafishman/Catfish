@@ -18,7 +18,6 @@ class ImageLoader: ObservableObject {
     
     init(urlString:String) {
         self.urlString = urlString
-        //loadImage()
         loadImageFromURL()
     }
     func loadImage() {

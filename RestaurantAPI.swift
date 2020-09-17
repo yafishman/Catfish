@@ -85,36 +85,6 @@ class RestaurantAPI: ObservableObject {
             }
         }.resume()
     }
-    //private func filter(_ results: [Restaurant]) -> [Restaurant] {
-    //    var end = results.filter { $0.rating >= Double(restaurantSearch.rating) }
-    //    if(restaurantSearch.transactions.contains("delivery")) {
-    //        end = end.filter {
-    //            $0.transactions.contains("delivery")
-    //        }
-    //    }
-    //    if(restaurantSearch.transactions.contains("pickup")) {
-    //        end = end.filter {
-    //            $0.transactions.contains("pickup")
-    //        }
-    //    }
-    //    if(restaurantSearch.hideDisliked) {
-    //        end = end.filter {
-    //            self.userData.profile.dislikes.contains($0)
-    //        }
-    //    }
-    //    if(restaurantSearch.hideVisited) {
-    //        end = end.filter {
-    //            self.userData.profile.visited.contains($0)
-    //        }
-    //    }
-    //    if(restaurantSearch.onlyWatchlist) {
-    //        end = end.filter {
-    //            !self.userData.profile.watchlist.contains($0)
-    //        }
-    //    }
-    //    return end
-    //}
-    
 }
 
 

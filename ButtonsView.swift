@@ -15,8 +15,6 @@ struct ButtonsView: View {
     var spacing: CGFloat = 50
     var body: some View {
         HStack(spacing: self.spacing) {
-            
-            
             Button(action: {
                 if self.userData.dislikes.contains(where: {$0.id==self.current.id}) {
                     self.userData.dislikes.removeAll {$0.id==self.current.id}
@@ -64,26 +62,6 @@ struct ButtonsView: View {
                         Image(systemName: "checkmark.circle")
                     }
                     Text("Visited").font(.footnote)
-
-//                    if self.userData.visited.contains(where: {$0.id==self.current.id}) {
-//                        VStack {
-//                            Text("Have")
-//                            Text("Visited")
-//                        }.font(.callout).padding(.horizontal).overlay(
-//                            Capsule(style: .continuous)
-//                                .stroke(Color.blue, style: StrokeStyle(lineWidth: 3))
-//                        )
-//                    } else {
-//                        VStack {
-//                            Text("Haven't")
-//                            Text("Visited")
-//                        }.font(.callout).padding(.horizontal).overlay(
-//                            Capsule(style: .continuous)
-//                                .stroke(Color.blue, style: StrokeStyle(lineWidth: 3))
-//                        )
-//
-//
-//                    }
                 }
             }
             Button(action: {
