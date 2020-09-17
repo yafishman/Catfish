@@ -55,7 +55,7 @@ struct DetailedView: View {
                     Text(restaurant.location.display_address[0])
                     Text(restaurant.location.display_address[1])
                 }
-            }.padding().font(.subheadline)
+            }.padding(.bottom).font(.subheadline)
                 .font(.subheadline)
             
             Text(restaurant.name)
@@ -94,7 +94,7 @@ struct DetailedView: View {
                     Image("yelp_logo").resizable().scaledToFit().frame(height: 40)
                 }.buttonStyle(PlainButtonStyle())
                 
-            }.padding()
+            }.padding(.horizontal)
             }
         }.edgesIgnoringSafeArea(.all)
             .sheet(isPresented: $isShareShowing) {

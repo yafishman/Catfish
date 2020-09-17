@@ -63,6 +63,19 @@ struct FilterRestaurants: View {
                     CategoryLabelView(categories: self.$draft.categories)
                 }
                 Button(action: {
+                        self.draft.isOpen.toggle()
+                    
+                }) {
+                    HStack {
+                        Text("Open Now").foregroundColor(self.draft.isOpen ? .blue: .black)
+                        Spacer()
+                        if self.draft.isOpen {
+                            Image(systemName: "checkmark")
+                        }
+                    }
+                    
+                }
+                Button(action: {
                     if(self.deliv) {
                         self.draft.transactions.remove(at: self.draft.transactions.firstIndex(of: "delivery")!)
                     } else {
@@ -73,7 +86,7 @@ struct FilterRestaurants: View {
                     
                 }) {
                     HStack {
-                        Text("Delivery")
+                        Text("Delivery").foregroundColor(self.deliv ? .blue: .black)
                         Spacer()
                         if self.deliv {
                             Image(systemName: "checkmark")
@@ -90,7 +103,7 @@ struct FilterRestaurants: View {
                     self.pickup.toggle()
                 }) {
                     HStack {
-                        Text("Pickup")
+                        Text("Pickup").foregroundColor(self.pickup ? .blue: .black)
                         Spacer()
                         if self.pickup {
                             Image(systemName: "checkmark")
@@ -98,27 +111,34 @@ struct FilterRestaurants: View {
                     }
                     
                 }
+                
                 Button(action: {
-                        self.draft.isOpen.toggle()
+                        self.draft.hideDisliked.toggle()
                     
                 }) {
                     HStack {
-                        Text("Open Now")
+                        Text("Hide Disliked").foregroundColor(self.draft.hideDisliked ? .blue: .black)
                         Spacer()
-                        if self.draft.isOpen {
+                        if self.draft.hideDisliked {
                             Image(systemName: "checkmark")
                         }
                     }
                     
                 }
-                HStack {
-                    Toggle(isOn: $draft.isOpen) { Text("Open now") }
-                }
-                HStack {
-                    Toggle(isOn: $draft.hideDisliked) { Text("Hide disliked") }
-                    Toggle(isOn: $draft.hideVisited) { Text("Hide visited") }
+                Button(action: {
+                        self.draft.hideVisited.toggle()
+                    
+                }) {
+                    HStack {
+                        Text("Hide Visited").foregroundColor(self.draft.hideVisited ? .blue: .black)
+                        Spacer()
+                        if self.draft.hideVisited {
+                            Image(systemName: "checkmark")
+                        }
+                    }
                     
                 }
+
                 
                 
             }

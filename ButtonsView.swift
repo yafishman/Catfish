@@ -15,25 +15,8 @@ struct ButtonsView: View {
     var spacing: CGFloat = 50
     var body: some View {
         HStack(spacing: self.spacing) {
-            Button(action: {
-                if self.userData.visited.contains(where: {$0.id==self.current.id}) {
-                    self.userData.visited.removeAll {$0.id==self.current.id}
-                    self.deleteData(id: self.current.id, list: "Visited")
-                } else {
-                    self.userData.visited.append(self.current)
-                    self.addData(restaurants: self.userData.visited, list: "Visited")
-                    self.userData.watchlist.removeAll {$0.id==self.current.id}
-                    self.deleteData(id: self.current.id, list: "Watchlist")
-                    
-                }
-                
-            }) {
-                if self.userData.visited.contains(where: {$0.id==self.current.id}) {
-                    Image(systemName: "tortoise.fill")
-                } else {
-                    Image(systemName: "tortoise")
-                }
-            }
+            
+            
             Button(action: {
                 if self.userData.dislikes.contains(where: {$0.id==self.current.id}) {
                     self.userData.dislikes.removeAll {$0.id==self.current.id}
@@ -57,9 +40,51 @@ struct ButtonsView: View {
                 if self.userData.dislikes.contains(where: {$0.id==self.current.id}) {
                     Image(systemName: "hand.thumbsdown.fill").foregroundColor(.red)
                 } else {
-                    Image(systemName: "hand.thumbsdown")
+                    Image(systemName: "hand.thumbsdown").foregroundColor(.red)
                 }
                 
+            }
+            Button(action: {
+                if self.userData.visited.contains(where: {$0.id==self.current.id}) {
+                    self.userData.visited.removeAll {$0.id==self.current.id}
+                    self.deleteData(id: self.current.id, list: "Visited")
+                } else {
+                    self.userData.visited.append(self.current)
+                    self.addData(restaurants: self.userData.visited, list: "Visited")
+                    self.userData.watchlist.removeAll {$0.id==self.current.id}
+                    self.deleteData(id: self.current.id, list: "Watchlist")
+                    
+                }
+                
+            }) {
+                VStack {
+                    if self.userData.visited.contains(where: {$0.id==self.current.id}) {
+                        Image(systemName: "checkmark.circle.fill")
+                    } else {
+                        Image(systemName: "checkmark.circle")
+                    }
+                    Text("Visited").font(.footnote)
+
+//                    if self.userData.visited.contains(where: {$0.id==self.current.id}) {
+//                        VStack {
+//                            Text("Have")
+//                            Text("Visited")
+//                        }.font(.callout).padding(.horizontal).overlay(
+//                            Capsule(style: .continuous)
+//                                .stroke(Color.blue, style: StrokeStyle(lineWidth: 3))
+//                        )
+//                    } else {
+//                        VStack {
+//                            Text("Haven't")
+//                            Text("Visited")
+//                        }.font(.callout).padding(.horizontal).overlay(
+//                            Capsule(style: .continuous)
+//                                .stroke(Color.blue, style: StrokeStyle(lineWidth: 3))
+//                        )
+//
+//
+//                    }
+                }
             }
             Button(action: {
                 if self.userData.watchlist.contains(where: {$0.id==self.current.id}) {
@@ -77,10 +102,13 @@ struct ButtonsView: View {
                     
                 }
             }) {
-                if self.userData.watchlist.contains(where: {$0.id==self.current.id}) {
-                    Image(systemName: "bookmark.fill").foregroundColor(.orange)
-                } else {
-                    Image(systemName: "bookmark")
+                VStack {
+                    if self.userData.watchlist.contains(where: {$0.id==self.current.id}) {
+                        Image(systemName: "bookmark.fill").foregroundColor(.orange)
+                    } else {
+                        Image(systemName: "bookmark").foregroundColor(.orange)
+                    }
+                    Text("Watchlist").font(.footnote).foregroundColor(.orange)
                 }
             }
             Button(action: {
@@ -106,9 +134,11 @@ struct ButtonsView: View {
                 if self.userData.likes.contains(where: {$0.id==self.current.id}) {
                     Image(systemName: "hand.thumbsup.fill").foregroundColor(.green)
                 } else {
-                    Image(systemName: "hand.thumbsup")
+                    Image(systemName: "hand.thumbsup").foregroundColor(.green)
                 }
             }
+            
+            
         }
     }
     func addData(restaurants: [Restaurant], list: String){

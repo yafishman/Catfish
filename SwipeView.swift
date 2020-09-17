@@ -40,8 +40,6 @@ struct SwipeView: View {
     @State private var animation: Animation = Animation.default
     @State private var animate: Bool = false
     @ObservedObject var restaurantFetcher: RestaurantAPI
-    @State var sheetView: String = "detail"
-    @State private var showSheet = false
     init(_ restaurantSearch: RestaurantSearch) {
         self.restaurantFetcher = (RestaurantAPI(restaurantSearch: restaurantSearch))
         
@@ -55,6 +53,10 @@ struct SwipeView: View {
     @State private var photoIndex = 0
     @State private var rightSwipe: Bool = false
     @State private var leftSwipe: Bool = false
+    @State private var possible: Bool = false
+    @State private var detailed: Bool = false
+    @State private var visited: Bool = false
+
     var cache = DetailedCache.getDetailedCache()
     var current: Restaurant { if(index>=restaurants.count) {return Restaurant(id: "null")} else {return restaurants[index]}}
     var detailedFetcher: DetailedAPI {
@@ -72,17 +74,22 @@ struct SwipeView: View {
         VStack {
             HStack {
                 Button(action: {
-                    self.showSheet = true
-                    self.sheetView = "possible"
+                    self.possible = true
+                    
                 }) {
                     Image(systemName: "eyeglasses")
+                }.sheet(isPresented: self.$possible) {
+                    ListView(title: "Possible", isPresented: self.$possible).environmentObject(self.userData)
+
                 }
                 Spacer()
                 Button(action: {
-                    self.showSheet = true
-                    self.sheetView = "visited"
+                    self.visited = true
                 }) {
                     Image(systemName: "person")
+                }.sheet(isPresented: self.$visited) {
+                        ProfileView(isPresented: self.$visited).environmentObject(self.userData)
+
                 }
                 Spacer()
             }.padding(.horizontal)
@@ -94,7 +101,6 @@ struct SwipeView: View {
             }
             else if(!restaurants.isEmpty && index<restaurants.count) {
                 GeometryReader { geometry in
-                    
                     VStack {
                         Spacer()
                         VStack {
@@ -117,7 +123,9 @@ struct SwipeView: View {
                         //PhotosView(restaurant: self.current, index: self.photoIndex)
                         ZStack {
                             
-                        PhotosView(restaurant: self.current, detailed: self.detailedFetcher, index: self.photoIndex)
+                            PhotosView(restaurant: self.current, detailed: self.detailedFetcher, index: self.photoIndex).sheet(isPresented: self.$detailed) {
+                                DetailedView(self.current, detailed: self.detailedFetcher, isPresented: self.$detailed).environmentObject(self.userData)
+                            }
                             .gesture(DragGesture(minimumDistance: 0.0, coordinateSpace: .local)
                                 .onChanged({ value in
                                     if (abs(value.translation.width)+abs(value.translation.height)) < 100.0 {
@@ -146,8 +154,7 @@ struct SwipeView: View {
                                         } else {
                                             withAnimation {
                                                 if value.translation.height < 0 && value.translation.width < 100 && value.translation.width > -100 {//UP
-                                                    self.showSheet = true
-                                                    self.sheetView = "detail"
+                                                    self.detailed = true
                                                     self.animate = false
                                                 } else if (value.translation.width > 0 && value.translation.height > -30 && value.translation.height < 30) {//RIGHT
                                                     self.userData.possibles.append(self.current)
@@ -215,16 +222,7 @@ struct SwipeView: View {
                     Spacer()
                 }
         }
-            //.offset(y: -80)
-            .sheet(isPresented: $showSheet) {
-                if(self.sheetView=="detail") {
-                    DetailedView(self.current, detailed: self.detailedFetcher, isPresented: self.$showSheet).environmentObject(self.userData)
-                } else if (self.sheetView=="visited") {
-                    ProfileView(isPresented: self.$showSheet).environmentObject(self.userData)
-                } else if (self.sheetView=="possible") {
-                    ListView(title: "Possible", isPresented: self.$showSheet).environmentObject(self.userData)
-                }
-            }
+
         
         }
         
