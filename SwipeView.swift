@@ -122,9 +122,9 @@ struct SwipeView: View {
                             PhotosView(restaurant: self.current, detailed: self.detailedFetcher, index: self.photoIndex).sheet(isPresented: self.$detailed) {
                                 DetailedView(self.current, detailed: self.detailedFetcher, isPresented: self.$detailed).environmentObject(self.userData)
                             }
-                            .gesture(DragGesture(minimumDistance: 0.0, coordinateSpace: .local)
+                            .gesture(DragGesture(minimumDistance: 0.0, coordinateSpace: .global)
                                 .onChanged({ value in
-                                    if (abs(value.translation.width)+abs(value.translation.height)) < 100.0 {
+                                    if (abs(value.translation.width)+abs(value.translation.height)) < 5.0 {
                                     } else {
                                         //self.offset.width = value.translation.width - geometry.size.width * CGFloat(self.index)
                                         if (value.translation.width > 0 && value.translation.height > -30 && value.translation.height < 30) {//RIGHT
@@ -136,7 +136,7 @@ struct SwipeView: View {
                                     }
                                     })
                                     .onEnded { value in
-                                        if (abs(value.translation.width)+abs(value.translation.height)) < 100.0 {
+                                        if (abs(value.translation.width)+abs(value.translation.height)) < 5.0 {
                                             if(value.startLocation.x >= geometry.size.width/2) {//right half
                                                 self.photoIndex += 1
                                                 self.animation = Animation.easeInOut
@@ -147,25 +147,28 @@ struct SwipeView: View {
                                                 self.animation = Animation.easeInOut
                                                 self.animate = false
                                             }
-                                        } else {
-                                            withAnimation {
-                                                if value.translation.height < 0 && value.translation.width < 100 && value.translation.width > -100 {//UP
+                                        }
+                                            //withAnimation {
+                                                else if (value.translation.height < -75 && value.translation.width > -30 && value.translation.width < 30)  {//UP
                                                     self.detailed = true
                                                     self.animate = false
-                                                } else if (value.translation.width > 0 && value.translation.height > -30 && value.translation.height < 30) {//RIGHT
+                                                } else if (value.translation.width > 75 && value.translation.height > -30 && value.translation.height < 30) {//RIGHT
                                                     self.userData.possibles.append(self.current)
                                                     self.index += 1
                                                     self.photoIndex = 0
                                                     self.animation = Animation.interactiveSpring()
                                                     self.animate = true
-                                                } else if (value.translation.width < 0 && value.translation.height > -30 && value.translation.height < 30) {//Left
+                                                } else if (value.translation.width < -75 && value.translation.height > -30 && value.translation.height < 30) {//Left
                                                     self.index += 1
                                                     self.photoIndex = 0
                                                     self.animation = Animation.interactiveSpring()
                                                     self.animate = true
+                                                } else {
+                                                    
+                                                    self.detailed=false
                                                 }
-                                            }
-                                        }
+                                            //}
+                                        
                                         
                                         self.offset = CGSize.zero
                                         self.rightSwipe=false
@@ -208,8 +211,8 @@ struct SwipeView: View {
                                         }.buttonStyle(PlainButtonStyle())
                                     }
                                     
-                                    }.offset(x: self.offset.width)
-                                    .rotationEffect(.degrees(Double(self.offset.width / 50)))
+                                    }.offset(x: self.offset.width*2)
+                                    .rotationEffect(.degrees(Double(self.offset.width / 100)))
                                     .transition(AnyTransition.slide).animation(.linear)
                     }
                 } else {
